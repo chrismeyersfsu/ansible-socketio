@@ -1,21 +1,8 @@
 var io = require('socket.io-client')
 var async = require('async')
 var request = require('request')
-
-// experiment
-var params = {
-    concurrency_level: 100,
-    total: 10000,
-    username: 'admin',
-    password: 'admin',
-    host: 'http://192.168.1.145:8080',
-    auth_url: 'http://192.168.1.145:8013/api/v1/authtoken/',
-    namespaces: [
-        '/socket.io/job_events',
-        '/socket.io/jobs',
-        '/socket.io/schedules'
-    ]
-}
+var params = require('./params')
+console.log(params)
 
 var socket_options = {
     'force new connection': true,
@@ -50,7 +37,7 @@ function connectHandler() {
  //   console.log("Socket " + this.index + " connected")
     setTimeout(function() {
         self.socket.disconnect()
-    }, 3000)
+    }, 1000)
 }
 console.log("Experiment, concurrency: " + params.concurrency_level + ", total: " + params.total)
 

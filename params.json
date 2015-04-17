@@ -1,0 +1,13 @@
+{
+    "concurrency_level": 100,
+    "total": 10000,
+    "username": "admin",
+    "password": "admin",
+    "host": "http://192.168.1.145:8080",
+    "auth_url": "http://192.168.1.145:8013/api/v1/authtoken/",
+    "namespaces": [
+        "/socket.io/job_events",
+        "/socket.io/jobs",
+        "/socket.io/schedules"
+    ]
+}
