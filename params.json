@@ -1,6 +1,6 @@
 {
-    "concurrency_level": 100,
-    "total": 10000,
+    "concurrency_level": 4,
+    "total": 12,
     "username": "admin",
     "password": "admin",
     "host": "http://192.168.1.145:8080",
@@ -9,5 +9,6 @@
         "/socket.io/job_events",
         "/socket.io/jobs",
         "/socket.io/schedules"
-    ]
+    ],
+    "timeout": 3000
 }

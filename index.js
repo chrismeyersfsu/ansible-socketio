@@ -37,7 +37,7 @@ function connectHandler() {
  //   console.log("Socket " + this.index + " connected")
     setTimeout(function() {
         self.socket.disconnect()
-    }, 1000)
+    }, params.timeout)
 }
 console.log("Experiment, concurrency: " + params.concurrency_level + ", total: " + params.total)
 
@@ -65,8 +65,8 @@ async.waterfall([
 
             socket_options.query = 'Token=' + token
 
-            if (state.count % 100 == 0) {
-                console.log("Completed " + state.count)
+            if (state.count % params.concurrency_level == 0) {
+                console.log("Started about " + state.count)
             }
 
             var rand = Math.floor(Math.random() * (params.namespaces.length-1))
