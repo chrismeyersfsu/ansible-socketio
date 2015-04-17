@@ -4,6 +4,8 @@ var request = require('request')
 var params = require('./params')
 console.log(params)
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 var socket_options = {
     'force new connection': true,
     'reconnect': false,
@@ -24,18 +26,23 @@ for (var i=0; i < params.total; ++i) {
 }
 
 function disconnectHandler() {
+    var self = this
 //    console.log("Socket " + this.index + " disconnected")
+    if (!self.clean_disconnect) {
+        console.log("Disconnect without us invocking on socket " + self.index)
+    }
     this.done()
 }
 
 function eventHandler(data) {
- //   console.log("Socket " + this.index + " got event " + data)
+    console.log("Socket " + this.index + " got event " + data)
 }
 
 function connectHandler() {
     var self = this
- //   console.log("Socket " + this.index + " connected")
+    console.log("Socket " + this.index + " connected")
     setTimeout(function() {
+        self.clean_disconnect = true
         self.socket.disconnect()
     }, params.timeout)
 }
@@ -54,7 +61,7 @@ async.waterfall([
         }
         request.post(options, function (err, resp, body) {
             if (err || resp.statusCode != 200) {
-                return cb(Error("Getting token failed " + resp.statusCode))
+                return cb(Error("Getting token failed " + err))
             }
             cb(null, body.token)
         })
@@ -78,7 +85,7 @@ async.waterfall([
             obj.socket.on('disconnect', function(what) {
                 disconnectHandler.call(obj)
             })
-            obj.socket.on('event', function(data) {
+            obj.socket.on('message', function(data) {
                 eventHandler.call(obj, data)
             })
             obj.socket.on('connect', function() {
@@ -97,3 +104,5 @@ async.waterfall([
         console.log(err)
     }
 })
+
+process.stdin.resume();
